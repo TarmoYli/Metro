@@ -122,20 +122,20 @@ def main():
             name_pick = values['-NAMEINPUT-']
 
         
-        elif event == '-ADD-':
+        elif event == '-ADD-': # melko himmeitä lauseita:
             
-            if any(value == '0' for key, value in values.items() if key != '-TABLE-' and key != '-NAMEINPUT-' and key != '-ACCENTINPUT-'):
-                sg.popup_ok('Values cannot be 0 in Tempo, Signature, Repeats or Accents.',title='CHECK VALUES',keep_on_top=True)
+            if any(value == '0' for key, value in values.items() if key != '-TABLE-' and key != '-NAMEINPUT-' and key != '-ACCENTINPUT-'): # any tarkistaa onko arvo 0 missään kentässä, ei oteta huomioon kenttiä table, name ja accent
+                sg.popup_ok('Values cannot be 0 in Tempo, Signature or Repeats',title='CHECK VALUES',keep_on_top=True)
                 pass
 
-            elif any(value == '' or not 1 <= int(value) <= 999 for key,value in values.items() if key in ('-TEMPOINPUT-', '-SIGINPUT-','-REPINPUT-')):
+            elif any(value == '' or not 1 <= int(value) <= 999 for key,value in values.items() if key in ('-TEMPOINPUT-', '-SIGINPUT-','-REPINPUT-')): # any tarkistaa onko arvo 1-999 missään kentissä tempo, signature ja repeat.
                 sg.popup_ok('Values must be in range 1-999 in Tempo, Signature and Repeats.',title='CHECK VALUES',keep_on_top=True)
                 pass
             
-            elif ',,' in act_pick or act_pick[0] == ',' or act_pick[-1] == ',':
+            elif ',,' in act_pick or act_pick[0] == ',' or act_pick[-1] == ',':                                                                 # tarkistetaan että ei ala eikä lopu pilkulla eikä ole useita pilkkuja peräkkäin.
                 sg.popup_ok('Accents value must NOT start or end with " , " or have " , " after another " , "','Do not use:\n,1,3\n1,3,\n1,,3',title='CHECK ACCENT',keep_on_top=True)
 
-            elif all(bool(value) for key, value in values.items() if key != '-TABLE-'):                 
+            elif all(bool(value) for key, value in values.items() if key != '-TABLE-'):                 # all tarkistaa että kaikissa kentissä on JOKU arvo. paitsi tablessa (jonne ne viedään).
                 row_list.append([name_pick,tempo_pick,sig_pick,note_pick,rep_pick,act_pick])            
                 window['-TABLE-'].update(values=row_list)
             else:
