@@ -36,7 +36,7 @@ def main():
 
     note_list = ['Meny',['1/1','1/2','1/4','1/8','1/16','1/32','1/64']]
 
-    tempo_pick, note_pick, sig_pick, rep_pick, act_pick, name_pick, load_name, play_once = '','','','','','','',''
+    tempo_pick, note_pick, sig_pick, rep_pick, act_pick, name_pick, display_content, play_once = '','','','','','','',''
 
     row_list = []
 
@@ -179,6 +179,14 @@ def main():
             with queMain.mutex:                                     # lukitaan que (varmuuden vuoksi, ehkä turha, koska mikään muu ei sitä käytä kuin worker)
                 queMain.queue.clear()                               # tyhjätään que
 
+        elif event == '-REMOVE-':
+            if not values['-TABLE-']:
+                pass
+            else:
+                del row_list[values['-TABLE-'][0]]
+                window['-TABLE-'].update(values=row_list)
+                play_once = ''
+
         elif event == '-SAVE-':
             if not row_list:
                 sg.popup('nothing to save')
@@ -190,39 +198,30 @@ def main():
                     else:
                         use_save.makeSave(rows=row_list, name=savename)
                         use_save.JsonSave()
-                        use_save.makeKeysList()
                 else:
                     use_save.makeSave(rows=row_list, name=savename)
                     use_save.JsonSave()
-                    use_save.makeKeysList()
 
         elif event == '-LOAD-' and not window2:
-            print(use_save.saved_patterns)
             window2 == use_save.save_load_window()
         
-        elif event == '-W2SLBOX-':
-            print(use_save.saved_patterns)
+        elif event == '-W2SLBOX-':  # päivittää sisällön output ikkunaan
             if values['-W2SLBOX-']:
-                load_name = values['-W2SLBOX-'][0]
-                window['-W2OUTPUT-'].update(use_save.getValues(load_name))
+                display_content = values['-W2SLBOX-'][0]
+                window['-W2OUTPUT-'].update(use_save.getValues(display_content))
         
         elif event == '-W2SLOAD-':
-            print(use_save.saved_patterns)
-            if load_name:
-                patterns_to_load = use_save.saved_patterns[load_name]
+            if values['-W2SLBOX-']:
+                get_name = values['-W2SLBOX-'][0]
+                patterns_to_load = use_save.saved_patterns[get_name]
                 row_list = copy.deepcopy(patterns_to_load)              # pff referenssi
                 window1['-TABLE-'].update(values=row_list)
-            else:
-                pass
 
-        elif event == '-REMOVE-':
-            print(use_save.saved_patterns)
-            if not values['-TABLE-']:
-                pass
-            else:
-                del row_list[values['-TABLE-'][0]]
-                window['-TABLE-'].update(values=row_list)
-                play_once = ''
+        elif event == '-W2SDELETE-':
+            if values['-W2SLBOX-']:
+                name_to_delete = values['-W2SLBOX-'][0]
+                use_save.removeSave(name=name_to_delete)
+                window['-W2SLBOX-'].update(values=use_save.makeKeysList())
 
     window.close()
 

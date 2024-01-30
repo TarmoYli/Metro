@@ -26,7 +26,17 @@ class Saver:
             json.dump(cls.saved_patterns,outfile)
 
     @classmethod
-    def makeKeysList(cls):
+    def removeSave(cls,name):
+        if name in cls.saved_patterns.keys():
+            cls.saved_patterns.pop(name)
+            out_file = Path('SaveData\data.json')
+            out_file.parent.mkdir(exist_ok=True,parents=True)
+            with open (out_file,'w') as outfile:
+                json.dump(cls.saved_patterns,outfile)
+            
+
+    @classmethod
+    def makeKeysList(cls):                                      # tekee listan avaimista listbox elementtiin.
         if cls.saved_patterns:
             loader = [x for x in cls.saved_patterns.keys()]
         else:
@@ -35,8 +45,8 @@ class Saver:
         return loader
     
     @classmethod
-    def getValues(cls, name):
-        mline_text = ''
+    def getValues(cls, name):                                   # Tulostaa listboxissa aktiivisen avaimen sisällön viereiseen output elementtiin
+        mline_text = ''                                         # käytetään "elif event == '-W2SLBOX-'"ssä
         if cls.saved_patterns:
             d_values = cls.saved_patterns[name]
             for i in range(len(d_values)):
@@ -51,13 +61,12 @@ class Saver:
     def save_load_window(cls):
                     
         layout_sll = [[sg.Listbox(values=cls.makeKeysList(),size=(20, 6),enable_events=True,key='-W2SLBOX-')],
-                      [sg.Button('Load',key='-W2SLOAD-')]
+                      [sg.Button('Load',key='-W2SLOAD-'),sg.Push(),sg.Button('Delete',key='-W2SDELETE-',button_color=('Black','Orange'))]
                         ]
         layout_slr =[[sg.Output(key='-W2OUTPUT-', size=(50,10))],
-                     [sg.Button('Exit')]
+                     [sg.Push(),sg.Button('Exit')]
                         ]
         layout_slf = [[sg.Col(layout_sll,p=20), sg.VerticalSeparator(p=10),sg.Col(layout_slr,p=20)]
                         ]
         
         return sg.Window('Save / Load',layout_slf,resizable=True,finalize=True,keep_on_top=True,modal=True)
-
