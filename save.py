@@ -1,25 +1,32 @@
 import PySimpleGUI as sg
 import json
+from pathlib import Path
 
 class Saver:
     
     saved_patterns = {}
 
     @classmethod
+    def GetFromJson(cls):
+        in_file = Path('SaveData\data.json')
+        if in_file.exists():
+            with open(in_file, 'r') as from_file:
+                cls.saved_patterns = json.load(from_file)
+
+    @classmethod
     def makeSave(cls,rows,name):
-        print('saved_patterns')
         cls.saved_patterns[name] = [row for row in rows]
         return cls.saved_patterns
     
     @classmethod
     def JsonSave(cls):
-        with open ('data.json','w') as outfile:
+        out_file = Path('SaveData\data.json')
+        out_file.parent.mkdir(exist_ok=True,parents=True)
+        with open (out_file,'w') as outfile:
             json.dump(cls.saved_patterns,outfile)
-        print(cls.saved_patterns)
 
     @classmethod
     def makeKeysList(cls):
-        print('saved_patterns')
         if cls.saved_patterns:
             loader = [x for x in cls.saved_patterns.keys()]
         else:
@@ -29,7 +36,6 @@ class Saver:
     
     @classmethod
     def getValues(cls, name):
-        print('saved_patterns')
         mline_text = ''
         if cls.saved_patterns:
             d_values = cls.saved_patterns[name]

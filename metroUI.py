@@ -78,6 +78,7 @@ def main():
     play = metroWorker.Worker(from_que=queMain, window=window1, locker=lock)
     use_save = save.Saver()
     
+    use_save.GetFromJson()
 
     isRunning = True                                    # ÄLÄ KOSKE NÄIHIN!!!
 
@@ -179,14 +180,21 @@ def main():
                 queMain.queue.clear()                               # tyhjätään que
 
         elif event == '-SAVE-':
-            print(use_save.saved_patterns)
-            if row_list:
-                savename = sg.popup_get_text('Enter name:',title='Save', keep_on_top=True)
-                use_save.makeSave(rows=row_list, name=savename)
-                #use_save.JsonSave()
-                use_save.makeKeysList()
-            else:
+            if not row_list:
                 sg.popup('nothing to save')
+            else:
+                savename = sg.popup_get_text('Enter name:',title='Save', keep_on_top=True)
+                if savename in use_save.saved_patterns.keys():
+                    if sg.popup_yes_no(f'{savename} already exists,\nDo you want to overwrite it?') != 'Yes':
+                        sg.popup('Save Cancelled')
+                    else:
+                        use_save.makeSave(rows=row_list, name=savename)
+                        use_save.JsonSave()
+                        use_save.makeKeysList()
+                else:
+                    use_save.makeSave(rows=row_list, name=savename)
+                    use_save.JsonSave()
+                    use_save.makeKeysList()
 
         elif event == '-LOAD-' and not window2:
             print(use_save.saved_patterns)
