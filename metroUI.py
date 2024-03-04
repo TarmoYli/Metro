@@ -8,7 +8,7 @@ import copy
 # todolist:
 # - mahdollisesti rivin editointi tablessa... (ei todellakaan (tai ehkä joskus))
 # - Save/Load toiminto... ehkä... (vie/tuo rowlist -> update rowlist.) (edit: välilehteen lista tallennetuista jotka haetaan JSONista nimellä?)
-
+# icon=r'C:\Python\taskmanager.ico')
 
 def make_pattern_instance(num, rows):
     pat_stats = rows[num]
