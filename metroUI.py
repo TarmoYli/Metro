@@ -5,9 +5,6 @@ import metroWorker
 import save
 import copy
 
-# todolist:
-# - mahdollisesti rivin editointi tablessa... (ei todellakaan (tai ehkä joskus))
-# - Save/Load toiminto... ehkä... (vie/tuo rowlist -> update rowlist.) (edit: välilehteen lista tallennetuista jotka haetaan JSONista nimellä?)
 # icon=r'C:\Python\taskmanager.ico')
 
 def make_pattern_instance(num, rows):
@@ -122,7 +119,7 @@ def main():
             name_pick = values['-NAMEINPUT-']
 
         
-        elif event == '-ADD-': # melko himmeitä lauseita:
+        elif event == '-ADD-':
             
             if any(value == '0' for key, value in values.items() if key != '-TABLE-' and key != '-NAMEINPUT-' and key != '-ACCENTINPUT-'): # any tarkistaa onko arvo 0 missään kentässä, ei oteta huomioon kenttiä table, name ja accent
                 sg.popup_ok('Values cannot be 0 in Tempo, Signature or Repeats',title='CHECK VALUES',keep_on_top=True)
