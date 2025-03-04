@@ -27,8 +27,8 @@ class Worker:
             else:
                 self.stop_thread()
 
-class PlaybackLocker:               # wrapperi, käytetään play/play all nappulan toiminnan estämiseen/sallimiseen,
-                                    # muutoin voi spämmiklikkauksella pumpata queueen holtittoman määrän tavaraa säikeelle.
+class PlaybackLocker:               # käytetään play/play all nappulan toiminnan estämiseen/sallimiseen,
+                                    # muutoin voi spämmiklikkauksella pumpata queueen holtittoman määrän tavaraa.
     def __init__(self):             # esim. play_all x 6 klikkiä toistaisi kaikki rivit kuudesti jne.
         self.locked = False         # lähtökohtaisesti False jotta päästään liikkeelle
 
