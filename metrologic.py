@@ -40,7 +40,7 @@ class Pattern:
             return 0
 
     def SoundPlayback(self, i):                 # äänen toisto
-        if i in self.base_accent:               # tämän takia accentit TÄYTYY olla muodossa "[x]" eli listana, iirc ei iteroi inttiä
+        if i in self.base_accent:               # tämän takia accentit TÄYTYY olla muodossa "[x]" eli listana
             self.metroSoundA.play()
         else:
             self.metroSoundB.play()
